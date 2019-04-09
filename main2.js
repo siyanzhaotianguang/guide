@@ -2,7 +2,7 @@
  * @Author: Dream 
  * @Date: 2019-04-03 13:43:03 
  * @Last Modified by: Dream
- * @Last Modified time: 2019-04-06 22:06:44
+ * @Last Modified time: 2019-04-08 15:52:24
  */
 let drapId = 1
 let $iframeWrap = $('#iframeWrap');
@@ -65,6 +65,9 @@ $(document).ready(() => {
         flag = true;
         let drap = document.createElement('div');
         drap.setAttribute('class', 'drap');
+        let move = document.createElement('div');
+        move.setAttribute('class', 'move');
+        drap.appendChild(move);
         let zoom = document.createElement('div');
         zoom.setAttribute('class', 'zoom');
         drap.appendChild(zoom);
@@ -78,6 +81,7 @@ $(document).ready(() => {
         drap.style.top = ev.pageY - wrapOffsetTop + 'px';
         drap.style.left = ev.pageX - wrapOffsetLeft + 'px';
         currentDrap = drap;
+        currentEdit = drap
         $(currentDrap).attr('id', `drap_${drapId++}`)//设置id
             .on("click", function () {
                 currentEdit = this
@@ -119,18 +123,18 @@ $(document).ready(() => {
         ev.stopPropagation(); // 阻止事件冒泡
     });
 
-    $('#delete').on('click',function(){
+    $('#delete').on('click', function () {
         $(currentEdit).remove();
     })
 
     $('#panel').mouseup((ev) => {
-        currentDrap.style.cursor = 'move';
         flag = false;
+        getEditInfo()
     });
     //获取当前编辑的区域信息
     function getEditInfo() {
-        $('#pos_x').val($(currentEdit).offset().left)
-        $('#pos_y').val($(currentEdit).offset().top)
+        $('#pos_x').val($(currentEdit).position().left)
+        $('#pos_y').val($(currentEdit).position().top)
         $('#e_width').val($(currentEdit).width())
         $('#e_height').val($(currentEdit).height())
         $('#lefttop').val($(currentEdit).css('border-top-left-radius'))
@@ -138,6 +142,19 @@ $(document).ready(() => {
         $('#righttop').val($(currentEdit).css('border-top-right-radius'))
         $('#rightdown').val($(currentEdit).css('border-bottom-right-radius'))
     }
+    //更新当前编辑的区域信息
+    $('#pos_x').on('keyup', function () {
+        let num = wrapWidth - $(currentEdit).width()
+        num = num > $(this).val() ? $(this).val() : num
+        $(this).val(num)
+        $(currentEdit)[0].style.left = num + 'px';
+    })
+    $('#pos_y').on('keyup', function () {
+        let num = wrapHeight - $(currentEdit).height()
+        num = num > $(this).val() ? $(this).val() : num
+        $(this).val(num)
+        $(currentEdit)[0].style.top = num + 'px';
+    })
     //获取选区信息
     function getSelectAreaInfo() {
         let len = $('.drap').length;
@@ -199,7 +216,74 @@ $(document).ready(() => {
         ev.preventDefault();
         ev.stopPropagation();
     });
+    let mouseStart = {};
+    let divStart = {};
+    /**********************缩放Start*************************/
+    $('#panel').on('mousedown', '.zoom', function (ev) {
+        mouseStart.x = ev.clientX;
+        mouseStart.y = ev.clientY;
+        divStart.x = $(this)[0].offsetLeft;
+        divStart.y = $(this)[0].offsetTop;
+        //console.log(this);
+        let parent = $(this).parent();;
+        let that = $(this)[0];
 
+        $('#panel').on('mousemove', '.zoom', function (ev) {
+            var oEvent = ev || event;
+                var l = oEvent.clientX - mouseStart.x + divStart.x;
+                var t = oEvent.clientY - mouseStart.y + divStart.y;
+
+                var w = l + that.offsetWidth;
+                var h = t + that.offsetHeight;
+
+                parent[0].style.width = w + 'px';
+                parent[0].style.height = h + 'px';
+        });
+        $('#panel').on('mouseup', '.zoom', function (ev) {
+            $('#panel').off('mousemove', '.zoom');
+        });
+        ev.preventDefault();
+        ev.stopPropagation();
+    });
+    function stopDrag(el) {
+        if (el.releaseCapture) {
+          el.onmousemove = null;
+          el.onmouseup = null;
+          el.releaseCapture();
+          console.log(1111);
+        } else {
+          document.removeEventListener("mousemove", doDrag, true);
+          document.removeEventListener("mouseup", stopDrag, true);
+        }
+      };
+    function doDrag(ev){
+        var oEvent = ev || event;
+        var l = oEvent.clientX - mouseStart.x;
+        var t = oEvent.clientY - mouseStart.y;
+
+        console.log(l, t);
+
+        // var w = l + oDiv.offsetWidth;
+        // var h = t + oDiv.offsetHeight;
+
+        // if (w < oDiv.offsetWidth) {
+        //     w = oDiv.offsetWidth;
+        // } else if (w > document.documentElement.clientWidth - oDiv2.offsetLeft) {
+        //     w = document.documentElement.clientWidth - oDiv2.offsetLeft - 2;
+        // }
+        // if (h < oDiv.offsetHeight) {
+        //     h = oDiv.offsetHeight;
+        // } else if (h > document.documentElement.clientHeight - oDiv2.offsetTop) {
+        //     h = document.documentElement.clientHeight - oDiv2.offsetTop - 2;
+        // }
+
+        // oDiv2.style.width = w + "px";
+        // oDiv2.style.height = h + "px";
+    }
+    function stopDrag(){
+        console.log(222);
+    }
+    /**********************缩放End***************************/
     const drawAll = () => {
         console.log('选区信息', selectedAreaInfo);
         let beCut2 = new Area(totalAreaInfo);
