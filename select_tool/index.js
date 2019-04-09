@@ -2,11 +2,7 @@
  * @Author: Dream 
  * @Date: 2019-04-08 08:56:14 
  * @Last Modified by: Dream
-<<<<<<< HEAD
- * @Last Modified time: 2019-04-09 09:44:12
-=======
- * @Last Modified time: 2019-04-08 18:48:20
->>>>>>> 178cbaf92acb960eff3465652aa0f810766e75fc
+ * @Last Modified time: 2019-04-09 10:07:15
  */
 let clientList = [{
     width: '320',
@@ -25,27 +21,16 @@ let clientList = [{
     height: '812'
 }
 ];
-<<<<<<< HEAD
 let src = document.getElementById('iframe').getAttribute('src');
-=======
->>>>>>> 178cbaf92acb960eff3465652aa0f810766e75fc
 /**
 * 调整iframe窗口大小
 * @param {宽高配置} obj 
 */
 const toggleClient = (obj) => {
-<<<<<<< HEAD
     document.getElementById('iframeWrap').style.width = clientList[obj.value].width + 'px';
     document.getElementById('iframeWrap').style.height = clientList[obj.value].height + 'px';
     
     document.getElementById('iframe').setAttribute('src', src);
-=======
-    iframeWrap.style.width = clientList[obj.value].width + 'px';
-    iframeWrap.style.height = clientList[obj.value].height + 'px';
-    
-    let src = iframeWrap.getAttribute('src');
-    iframeWrap.setAttribute('src', src);
->>>>>>> 178cbaf92acb960eff3465652aa0f810766e75fc
 } 
 window.onload = function() {
     let iframeWrap = document.getElementById('iframeWrap');
