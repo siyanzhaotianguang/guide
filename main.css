@@ -93,6 +93,22 @@ a {
   position: absolute;
 }
 
+.iframe-wrap .move {
+  position: absolute;
+  height: 15px;
+  width: 100%;
+  cursor: move;
+}
+
+.iframe-wrap .zoom {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 20px;
+  height: 20px;
+  cursor: se-resize;
+}
+
 .ipone5 {
   width: 320px;
   height: 568px;
@@ -120,11 +136,6 @@ a {
 
 .dolist-item {
   margin-bottom: 15px;
-}
-
-.dolist-select-area {
-  margin-bottom: 15px;
-  /* display:none; */
 }
 
 .dolist .tips {
