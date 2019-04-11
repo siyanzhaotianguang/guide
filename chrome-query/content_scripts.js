@@ -6,6 +6,7 @@ let clientInfo = { //视口信息
 };
 let domList = [];
 let selectedAreaInfo = [];
+let domAddressList = []
 /**
  * 获取元素在Dom树中的位置
  * @param {*} ele 
@@ -22,20 +23,31 @@ function getIndex(ele, result) {
     result.push(i)
     return getIndex(ele.parentNode, result);
 };
+//获取当前页面的dom和cfg信息
+function getCfgAndDomList() {
+    let result = []
+    for (let i = 0; i < domAddressList.length; i++) {
+        let dom = domAddressList[i]
+        let cfg = getMarginInfoByDomListIndex(i)
+        result.push({ dom, cfg })
+    }
+    return result
+}
 //选择元素
 function setSelectedElement(el, cfg) {
     let result = [];
     getIndex(el, result);
-    
+
     createSelect(el);
     let newresult = result.reverse();
     newresult.shift();
     domList.push(getDomByAddress(newresult));
+    domAddressList.push(newresult)
     return newresult;
 };
 //修改编剧
-function changeMargin(el, option){
-    if(el.children){
+function changeMargin(el, option) {
+    if (el.children) {
         el.innerHTML = '';
     }
     let sign = el.getAttribute('id');
@@ -47,24 +59,32 @@ function changeMargin(el, option){
     left.style.cssText = `position:absolute;z-index:99999;height:${el.offsetHeight + option.top + option.bottom}px;width:${option.left}px;left:${-option.left}px;top:${-option.top}px;background:rgba(0,255,255,0.7);`
     bottom.style.cssText = `position:absolute;z-index:99999;width:100%;height:${option.bottom}px;left:0;bottom:${-option.bottom}px;background:rgba(0,255,255,0.7);`
     right.style.cssText = `position:absolute;z-index:99999;height:${el.offsetHeight + option.top + option.bottom}px;width:${option.right}px;right:${-option.right}px;top:${-option.top}px;background:rgba(0,255,255,0.7);`
-    top.setAttribute('id','top_'+sign);
-    left.setAttribute('id','left_'+sign);
-    bottom.setAttribute('id','bottom_'+sign);
-    right.setAttribute('id','right_'+sign);
+    top.setAttribute('id', 'top_' + sign);
+    left.setAttribute('id', 'left_' + sign);
+    bottom.setAttribute('id', 'bottom_' + sign);
+    right.setAttribute('id', 'right_' + sign);
     el.appendChild(top);
     el.appendChild(left);
     el.appendChild(right);
     el.appendChild(bottom);
 }
+//根据在domList中的下标获取边距信息
+function getMarginInfoByDomListIndex(index) {
+    let top = document.getElementById(`top_signmask_${index}`) || {};
+    let left = document.getElementById(`left_signmask_${index}`) || {};
+    let bottom = document.getElementById(`bottom_signmask_${index}`) || {};
+    let right = document.getElementById(`right_signmask_${index}`) || {};
+    return { top: top.offsetHeight || 0, bottom: bottom.offsetHeight || 0, left: left.offsetWidth || 0, right: right.offsetWidth || 0 }
+}
 //生成选中样式
-function createSelect(dom){
+function createSelect(dom) {
     let top = offsetDis(dom).top;
     let left = offsetDis(dom).left;
     let width = dom.offsetWidth;
     let height = dom.offsetHeight;
     let oDiv = document.createElement('div');
     oDiv.setAttribute('class', 'example');
-    oDiv.setAttribute('id', 'signmask_'+domList.length);
+    oDiv.setAttribute('id', 'signmask_' + domList.length);
     oDiv.style.cssText = `top:${top}px;height:${height}px;left:${left}px;width:${width}px;position:absolute;z-index:99999;background:rgba(0,255,0,0.3);`;
     document.body.appendChild(oDiv);
 }

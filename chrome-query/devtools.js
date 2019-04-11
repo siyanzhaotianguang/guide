@@ -5,16 +5,11 @@
 
 // The function below is executed in the context of the inspected page.
 let frameUrl = ''
-let domList = []
 
 chrome.devtools.panels.create("new panels",
   "Panel.png",
   "Panel.html",
   function (panel) {
-    // let button = panel.createStatusBarButton('Panel.png ', 'selectDom', false)
-    // button.onClicked.addListener(update);
-    // let button2 = panel.createStatusBarButton('Panel.png ', 'createMask', false)
-    // button2.onClicked.addListener(mask)
   })
 
 var mask = function () {
@@ -26,7 +21,6 @@ var mask = function () {
 var update = function (marginConfig) {
   chrome.devtools.inspectedWindow.eval(`setSelectedElement($0, ${JSON.stringify(marginConfig)})`,
     { useContentScriptContext: true, frameURL: frameUrl }, (data, err) => {
-      domList.push(data)
       chrome.devtools.inspectedWindow.eval(`log(${JSON.stringify(data)})`,
         { useContentScriptContext: true }, (data, err) => {
         })
@@ -36,14 +30,18 @@ var update = function (marginConfig) {
 var setUrl = function (url) {
   chrome.devtools.inspectedWindow.eval(`setUrl(${JSON.stringify(url)})`,
     { useContentScriptContext: true }, (data, err) => {
-      console.log('111', data)
       frameUrl = data
-      domList = []
     })
 }
 
-var changeValue = function(valueObj){
-  console.log('123321',valueObj);
+var getCfgAndDomList = function (cb) {
+  chrome.devtools.inspectedWindow.eval(`getCfgAndDomList()`,
+    { useContentScriptContext: true, frameURL: frameUrl }, (data, err) => {
+      cb(err, data)
+    })
+}
+
+var changeValue = function (valueObj) {
   chrome.devtools.inspectedWindow.eval(`changeMargin($0,${JSON.stringify(valueObj)})`,
     { useContentScriptContext: true, frameURL: frameUrl }, (data, err) => {
     })

@@ -9,6 +9,7 @@ window.onload = function () {
         return obj
     };
 
+    //按钮点击事件
     let selBut = document.getElementById('selectDomBut')
     selBut.addEventListener('click', function () {
         let marginConfig = getOption();
@@ -16,7 +17,6 @@ window.onload = function () {
     }, false);
     let creBut = document.getElementById('createMaskBut')
     creBut.addEventListener('click', function () {
-        console.log('生成遮罩')
         mask();
     }, false);
     let setBut = document.getElementById('setIframeUrlBut')
@@ -26,21 +26,35 @@ window.onload = function () {
     }, false);
     let downBut = document.getElementById('downloadCfg')
     downBut.addEventListener('click', function () {
-        console.log('domList', domList)
-        downloadFile('cfg.json', JSON.stringify(domList));
+        getCfgAndDomList(function (err, data) {
+            downloadFile('cfg.json', JSON.stringify(data))
+        })
     }, false);
 
     setUrl();
 
+    //输入框更新扩展区域
     let upInput = document.getElementById('upMargin');
-    upInput.addEventListener('keyup', function(){
-        console.log('9999999999');
+    upInput.addEventListener('keyup', function () {
         let currentValue = getOption();
-
-        console.log('当前值', currentValue);
         changeValue(currentValue);
     })
-    
+    let bottomInput = document.getElementById('downMargin');
+    bottomInput.addEventListener('keyup', function () {
+        let currentValue = getOption();
+        changeValue(currentValue);
+    })
+    let leftInput = document.getElementById('leftMargin');
+    leftInput.addEventListener('keyup', function () {
+        let currentValue = getOption();
+        changeValue(currentValue);
+    })
+    let rightInput = document.getElementById('rightMargin');
+    rightInput.addEventListener('keyup', function () {
+        let currentValue = getOption();
+        changeValue(currentValue);
+    })
+
 }
 
 function downloadFile(fileName, content) { //创建文件内容
