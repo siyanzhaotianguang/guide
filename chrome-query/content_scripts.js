@@ -25,8 +25,12 @@ function setSelectedElement(el) {
     return newresult;
 }
 
-function getUrl() {
+function setUrl(url) {
     let ifr = document.getElementById("iframe")
+    if (url) {
+        ifr.src = url
+        domList = []
+    }
     return ifr.src
 }
 
