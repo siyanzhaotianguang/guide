@@ -5,6 +5,7 @@
 
 // The function below is executed in the context of the inspected page.
 let frameUrl = ''
+let exportContent = []
 
 chrome.devtools.panels.create("new panels",
   "Panel.png",
@@ -39,6 +40,10 @@ var getCfgAndDomList = function (cb) {
     { useContentScriptContext: true, frameURL: frameUrl }, (data, err) => {
       cb(err, data)
     })
+}
+
+var saveCurrentStep = function (data) {
+  exportContent.push({ frameUrl, data })
 }
 
 var changeValue = function (valueObj) {

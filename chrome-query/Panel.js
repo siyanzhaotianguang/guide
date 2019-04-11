@@ -9,6 +9,11 @@ window.onload = function () {
         return obj
     };
 
+    let iframeUrlInput = document.getElementById('iframeUrl');
+    iframeUrlInput.addEventListener('change', function () {
+        let url = this.value
+        setUrl(url)
+    })
     //按钮点击事件
     let selBut = document.getElementById('selectDomBut')
     selBut.addEventListener('click', function () {
@@ -19,15 +24,20 @@ window.onload = function () {
     creBut.addEventListener('click', function () {
         mask();
     }, false);
-    let setBut = document.getElementById('setIframeUrlBut')
-    setBut.addEventListener('click', function () {
-        let url = document.getElementById('iframeUrl').value
-        setUrl(url)
-    }, false);
+    // let setBut = document.getElementById('setIframeUrlBut')
+    // setBut.addEventListener('click', function () {
+    //     let url = document.getElementById('iframeUrl').value
+    //     setUrl(url)
+    // }, false);
     let downBut = document.getElementById('downloadCfg')
     downBut.addEventListener('click', function () {
+        downloadFile('cfg.json', JSON.stringify(exportContent))
+    }, false);
+    let saveBut = document.getElementById('saveCurrentStep')
+    saveBut.addEventListener('click', function () {
         getCfgAndDomList(function (err, data) {
-            downloadFile('cfg.json', JSON.stringify(data))
+            saveCurrentStep(data)
+            setUrl(frameUrl)
         })
     }, false);
 

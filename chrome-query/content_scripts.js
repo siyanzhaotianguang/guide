@@ -118,12 +118,15 @@ function createMask() {
     let beCut2 = new Area(clientInfo);
     let seizeAreaArr = [];
     console.log('dom节点', domList);
-    domList.forEach(item => {
+    for (let i = 0; i < domList.length; i++) {
+        let item = domList[i]
+        let marginInfo = getMarginInfoByDomListIndex(i)
+        // domList.forEach(item => {
         selectedAreaInfo.push({
-            u: offsetDis(item).top,
-            d: offsetDis(item).top + item.offsetHeight,
-            l: offsetDis(item).left,
-            r: offsetDis(item).left + item.offsetWidth,
+            u: offsetDis(item).top - marginInfo.top,
+            d: offsetDis(item).top + item.offsetHeight + marginInfo.bottom,
+            l: offsetDis(item).left - marginInfo.left,
+            r: offsetDis(item).left + item.offsetWidth + marginInfo.right,
             radius: {
                 'topLeft': getElementCss(item, 'border-top-left-radius'),
                 'topRight': getElementCss(item, 'border-top-right-radius'),
@@ -131,7 +134,8 @@ function createMask() {
                 'bottomLeft': getElementCss(item, 'border-bottom-left-radius'),
             }
         });
-    });
+        // });
+    }
     console.log('位置信息', selectedAreaInfo);
 
     selectedAreaInfo.forEach((item) => {
