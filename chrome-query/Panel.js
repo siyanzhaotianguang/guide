@@ -1,11 +1,19 @@
 window.onload = function () {
+    let marginConfig = {
+        top: +document.getElementById('upMargin').value,
+        bottom: +document.getElementById('downMargin').value,
+        left: +document.getElementById('leftMargin').value,
+        right: +document.getElementById('rightMargin').value,
+    };
+
     let selBut = document.getElementById('selectDomBut')
     selBut.addEventListener('click', function () {
-        update()
+        update(marginConfig)
     }, false);
     let creBut = document.getElementById('createMaskBut')
     creBut.addEventListener('click', function () {
-        mask()
+        console.log('生成遮罩')
+        mask();
     }, false);
     let setBut = document.getElementById('setIframeUrlBut')
     setBut.addEventListener('click', function () {
@@ -18,7 +26,9 @@ window.onload = function () {
         downloadFile('cfg.json', domList);
     }, false);
 
-    setUrl()
+    setUrl();
+
+    
 }
 
 function downloadFile(fileName, content) { //创建文件内容

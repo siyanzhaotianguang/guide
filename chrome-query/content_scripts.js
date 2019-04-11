@@ -15,13 +15,16 @@ function getIndex(ele, result) {
     return getIndex(ele.parentNode, result);
 };
 //选择元素
-function setSelectedElement(el) {
+function setSelectedElement(el, cfg) {
     let result = [];
     getIndex(el, result);
     let newresult = result.reverse();
     newresult.shift();
 
-    domList.push(getDomByAddress(newresult));
+    domList.push({
+        dom: getDomByAddress(newresult),
+        option: cfg
+    });
     return newresult;
 }
 
@@ -65,10 +68,10 @@ function createMask() {
     console.log('dom节点', domList);
     domList.forEach(item => {
         selectedAreaInfo.push({
-            u: offsetDis(item).top,
-            d: offsetDis(item).top + item.offsetHeight,
-            l: offsetDis(item).left,
-            r: offsetDis(item).left + item.offsetWidth,
+            u: offsetDis(item.dom).top - item.option.top,
+            d: offsetDis(item.dom).top + item.dom.offsetHeight + item.option.bottom,
+            l: offsetDis(item.dom).left - item.option.left,
+            r: offsetDis(item.dom).left + item.dom.offsetWidth + item.option.right,
             radius: {
                 'topLeft': getElementCss(item, 'border-top-left-radius'),
                 'topRight': getElementCss(item, 'border-top-right-radius'),

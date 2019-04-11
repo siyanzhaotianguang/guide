@@ -18,13 +18,13 @@ chrome.devtools.panels.create("new panels",
   })
 
 var mask = function () {
-  chrome.devtools.inspectedWindow.eval("createMask()",
+  chrome.devtools.inspectedWindow.eval(`createMask()`,
     { useContentScriptContext: true, frameURL: frameUrl }, (data, err) => {
     })
 }
 
-var update = function () {
-  chrome.devtools.inspectedWindow.eval("setSelectedElement($0)",
+var update = function (marginConfig) {
+  chrome.devtools.inspectedWindow.eval(`setSelectedElement($0, ${JSON.stringify(marginConfig)})`,
     { useContentScriptContext: true, frameURL: frameUrl }, (data, err) => {
       domList.push(data)
       chrome.devtools.inspectedWindow.eval(`log(${JSON.stringify(data)})`,
