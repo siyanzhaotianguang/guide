@@ -15,7 +15,7 @@ window.onload = function () {
     let downBut = document.getElementById('downloadCfg')
     downBut.addEventListener('click', function () {
         console.log('domList', domList)
-        downloadFile('cfg.json', domList);
+        downloadFile('cfg.json', JSON.stringify(domList));
     }, false);
 
     setUrl()
@@ -23,7 +23,7 @@ window.onload = function () {
 
 function downloadFile(fileName, content) { //创建文件内容
     var aLink = document.createElement('a');
-    var blob = new Blob([content]); //创建二进制文件
+    var blob = new Blob([content], { type: 'application/json' }); //创建二进制文件
     var evt = document.createEvent("MouseEvents");
     evt.initEvent("click", false, false);
     aLink.download = fileName; //下载文件名
