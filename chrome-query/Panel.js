@@ -1,13 +1,17 @@
 window.onload = function () {
-    let marginConfig = {
-        top: +document.getElementById('upMargin').value,
-        bottom: +document.getElementById('downMargin').value,
-        left: +document.getElementById('leftMargin').value,
-        right: +document.getElementById('rightMargin').value,
+    const getOption = () => {
+        let obj = {
+            top: +document.getElementById('upMargin').value,
+            bottom: +document.getElementById('downMargin').value,
+            left: +document.getElementById('leftMargin').value,
+            right: +document.getElementById('rightMargin').value,
+        };
+        return obj
     };
 
     let selBut = document.getElementById('selectDomBut')
     selBut.addEventListener('click', function () {
+        let marginConfig = getOption();
         update(marginConfig)
     }, false);
     let creBut = document.getElementById('createMaskBut')
@@ -28,6 +32,14 @@ window.onload = function () {
 
     setUrl();
 
+    let upInput = document.getElementById('upMargin');
+    upInput.addEventListener('keyup', function(){
+        console.log('9999999999');
+        let currentValue = getOption();
+
+        console.log('当前值', currentValue);
+        changeValue(currentValue);
+    })
     
 }
 

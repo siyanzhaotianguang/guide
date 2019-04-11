@@ -1,3 +1,11 @@
+let clientInfo = { //视口信息
+    u: 0,
+    d: document.documentElement.clientHeight,
+    l: 0,
+    r: document.documentElement.clientWidth
+};
+let domList = [];
+let selectedAreaInfo = [];
 /**
  * 获取元素在Dom树中的位置
  * @param {*} ele 
@@ -18,14 +26,47 @@ function getIndex(ele, result) {
 function setSelectedElement(el, cfg) {
     let result = [];
     getIndex(el, result);
+    
+    createSelect(el);
     let newresult = result.reverse();
     newresult.shift();
-
-    domList.push({
-        dom: getDomByAddress(newresult),
-        option: cfg
-    });
+    domList.push(getDomByAddress(newresult));
     return newresult;
+};
+//修改编剧
+function changeMargin(el, option){
+    if(el.children){
+        el.innerHTML = '';
+    }
+    let sign = el.getAttribute('id');
+    let top = document.createElement('div');
+    let left = document.createElement('div');
+    let bottom = document.createElement('div');
+    let right = document.createElement('div');
+    top.style.cssText = `position:absolute;z-index:99999;width:100%;height:${option.top}px;left:0;top:${-option.top}px;background:rgba(0,255,255,0.7);`
+    left.style.cssText = `position:absolute;z-index:99999;height:${el.offsetHeight + option.top + option.bottom}px;width:${option.left}px;left:${-option.left}px;top:${-option.top}px;background:rgba(0,255,255,0.7);`
+    bottom.style.cssText = `position:absolute;z-index:99999;width:100%;height:${option.bottom}px;left:0;bottom:${-option.bottom}px;background:rgba(0,255,255,0.7);`
+    right.style.cssText = `position:absolute;z-index:99999;height:${el.offsetHeight + option.top + option.bottom}px;width:${option.right}px;right:${-option.right}px;top:${-option.top}px;background:rgba(0,255,255,0.7);`
+    top.setAttribute('id','top_'+sign);
+    left.setAttribute('id','left_'+sign);
+    bottom.setAttribute('id','bottom_'+sign);
+    right.setAttribute('id','right_'+sign);
+    el.appendChild(top);
+    el.appendChild(left);
+    el.appendChild(right);
+    el.appendChild(bottom);
+}
+//生成选中样式
+function createSelect(dom){
+    let top = offsetDis(dom).top;
+    let left = offsetDis(dom).left;
+    let width = dom.offsetWidth;
+    let height = dom.offsetHeight;
+    let oDiv = document.createElement('div');
+    oDiv.setAttribute('class', 'example');
+    oDiv.setAttribute('id', 'signmask_'+domList.length);
+    oDiv.style.cssText = `top:${top}px;height:${height}px;left:${left}px;width:${width}px;position:absolute;z-index:99999;background:rgba(0,255,0,0.3);`;
+    document.body.appendChild(oDiv);
 }
 
 function setUrl(url) {
@@ -40,15 +81,6 @@ function setUrl(url) {
 function log(data) {
     console.log('选中Dom位置信息', data);
 }
-
-let clientInfo = { //视口信息
-    u: 0,
-    d: document.documentElement.clientHeight,
-    l: 0,
-    r: document.documentElement.clientWidth
-};
-let domList = [];
-let selectedAreaInfo = [];
 
 //根据节点位置获取Dom
 const getDomByAddress = (data) => {
@@ -68,10 +100,10 @@ function createMask() {
     console.log('dom节点', domList);
     domList.forEach(item => {
         selectedAreaInfo.push({
-            u: offsetDis(item.dom).top - item.option.top,
-            d: offsetDis(item.dom).top + item.dom.offsetHeight + item.option.bottom,
-            l: offsetDis(item.dom).left - item.option.left,
-            r: offsetDis(item.dom).left + item.dom.offsetWidth + item.option.right,
+            u: offsetDis(item).top,
+            d: offsetDis(item).top + item.offsetHeight,
+            l: offsetDis(item).left,
+            r: offsetDis(item).left + item.offsetWidth,
             radius: {
                 'topLeft': getElementCss(item, 'border-top-left-radius'),
                 'topRight': getElementCss(item, 'border-top-right-radius'),

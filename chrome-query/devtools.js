@@ -41,4 +41,12 @@ var setUrl = function (url) {
       domList = []
     })
 }
+
+var changeValue = function(valueObj){
+  console.log('123321',valueObj);
+  chrome.devtools.inspectedWindow.eval(`changeMargin($0,${JSON.stringify(valueObj)})`,
+    { useContentScriptContext: true, frameURL: frameUrl }, (data, err) => {
+    })
+}
+
 // update()
