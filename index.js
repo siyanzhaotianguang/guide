@@ -2,7 +2,7 @@
  * @Author: Dream 
  * @Date: 2019-04-08 08:56:14 
  * @Last Modified by: Dream
- * @Last Modified time: 2019-04-09 10:07:15
+ * @Last Modified time: 2019-04-09 17:09:25
  */
 let clientList = [{
     width: '320',
@@ -36,6 +36,7 @@ window.onload = function() {
     let iframeWrap = document.getElementById('iframeWrap');
     let panel = document.getElementById('panel');
     let checkBtn = document.getElementById('check');
+    let coverBtn = document.getElementById('allCover');
     let deleteBtn = document.getElementById('delete');
     let areaType = 0; //选区类型(0:矩形选区、1：圆形选区)
     let currentArea = null; //当前选区
@@ -54,13 +55,18 @@ window.onload = function() {
         l: 0,
         r: wrapInfo.width
     };
+    let maskConfig = []; //所有遮罩配置信息
+    //全覆盖
+    coverBtn.onclick = () => {
+        drawSquareMask(0, wrapInfo.height, 0, wrapInfo.width);
+    }
     //确认选区
     checkBtn.onclick = () => {
         getSelectAreaInfo();
         if(!document.getElementsByClassName('mask').length){
             drawAll();
         }
-        
+        getPercentInfo();
         let drapList = document.getElementsByClassName('drap');
         Array.prototype.slice.call(drapList).forEach((item) => {
             panel.removeChild(item);
@@ -76,10 +82,10 @@ window.onload = function() {
         let drapList = document.getElementsByClassName('drap');
         for (let i = 0; i < drapList.length; i++) {
             selectedAreaInfo.push({
-                u: Number(drapList[i].style.top.slice(0, - 2)),
+                u: Number(drapList[i].style.top.slice(0, - 2)) <= 8 ? 0 : Number(drapList[i].style.top.slice(0, - 2)),
                 d: Number(drapList[i].style.top.slice(0, - 2)) + Number(drapList[i].style.height.slice(0, - 2)),
-                l: Number(drapList[i].style.left.slice(0, - 2)),
-                r: Number(drapList[i].style.left.slice(0, - 2)) + Number(drapList[i].style.width.slice(0, - 2)),
+                l: Number(drapList[i].style.left.slice(0, - 2)) <= 8 ? 0 : Number(drapList[i].style.left.slice(0, - 2)),
+                r: (wrapInfo.width - (Number(drapList[i].style.left.slice(0, - 2)) + Number(drapList[i].style.width.slice(0, - 2)))) <= 8 ? wrapInfo.width : Number(drapList[i].style.left.slice(0, - 2)) + Number(drapList[i].style.width.slice(0, - 2)),
                 type: drapList[i].getAttribute('data-type'),
                 radius: {
                     'topLeft': +drapList[i].getAttribute('data-radius').split('/')[0],
@@ -89,8 +95,9 @@ window.onload = function() {
                 }
             })
         }
-        console.log(selectedAreaInfo);
+        console.log('选区', selectedAreaInfo);
     }
+    let drawAreaList = [];
     //绘制遮罩
     const drawAll = () => {
         let beCut2 = new Area(totalAreaInfo);
@@ -115,7 +122,8 @@ window.onload = function() {
             }
         })
 
-        let drawAreaList = Area.multipleSplitArea(beCut2, seizeAreaArr);
+        drawAreaList = Area.multipleSplitArea(beCut2, seizeAreaArr);
+
         drawAreaList.forEach((item) => {
             drawSquareMask(item.u, item.d, item.l, item.r);
         })
@@ -123,7 +131,23 @@ window.onload = function() {
     //初始化画板
     const panelInit = () => {
         selectedAreaInfo.length = 0;
-    }
+    };
+    //获取所有遮罩百分比信息
+    const getPercentInfo = () => {
+        //let maskList = document.getElementsByClassName('mask');
+        console.log(drawAreaList);
+        drawAreaList.forEach(item => {
+            item.u = item.u === 0 ? 0 : item.u/wrapInfo.height;
+            item.d = item.d === wrapInfo.height ? 100 : item.d/wrapInfo.height;
+            item.l = item.l === 0 ? 0 : item.l/wrapInfo.width;
+            item.r = item.r === wrapInfo.width ? 100 : item.r/wrapInfo.width; 
+        });
+        // Array.prototype.slice.call(maskList).forEach((item, index) => {
+        //     maskConfig.push({
+                
+        //     });
+        // })
+    };
     /**********************************选区Start**********************************/
     panel.addEventListener('mousedown', function(ev){
         areaType = +getRadioButtonCheckedValue('chooseType');
