@@ -4,11 +4,8 @@
 // found in the LICENSE file.
 
 // The function below is executed in the context of the inspected page.
-let frameUrl = null
-chrome.devtools.inspectedWindow.eval(`getUrl()`,
-  { useContentScriptContext: true }, (data, err) => {
-    frameUrl = data
-  })
+let frameUrl = ''
+let domList = []
 
 chrome.devtools.panels.create("new panels",
   "Panel.png",
@@ -29,10 +26,19 @@ var mask = function () {
 var update = function () {
   chrome.devtools.inspectedWindow.eval("setSelectedElement($0)",
     { useContentScriptContext: true, frameURL: frameUrl }, (data, err) => {
+      domList.push(data)
       chrome.devtools.inspectedWindow.eval(`log(${JSON.stringify(data)})`,
         { useContentScriptContext: true }, (data, err) => {
         })
     })
 }
 
-update()
+var setUrl = function (url) {
+  chrome.devtools.inspectedWindow.eval(`setUrl(${JSON.stringify(url)})`,
+    { useContentScriptContext: true }, (data, err) => {
+      console.log('111', data)
+      frameUrl = data
+      domList = []
+    })
+}
+// update()
