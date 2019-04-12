@@ -30,10 +30,11 @@ var update = function (marginConfig) {
 }
 
 
-var setUrl = function (url) {
+var setUrl = function (url, cb) {
   chrome.devtools.inspectedWindow.eval(`setUrl(${JSON.stringify(url)})`,
     { useContentScriptContext: true }, (data, err) => {
-      frameUrl = data
+      frameUrl = data;
+      if(cb) cb();
       console.log('setUrl ', frameUrl)
     })
 }
@@ -49,15 +50,17 @@ var showByViewIndex = function (index) {
   let cfg = exportContent[index]
   console.log('bbbb', cfg, frameUrl)
   setUrl(cfg.frameUrl, function (err, data) {
-    chrome.devtools.inspectedWindow.eval(`showByCfg(${JSON.stringify(cfg)})`,
+    setTimeout(function(){
+      chrome.devtools.inspectedWindow.eval(`showByCfg(${JSON.stringify(cfg)})`,
       { useContentScriptContext: true, frameURL: frameUrl }, (data, err) => {
         console.log('show end')
       })
+    }, 3000);
   })
 }
 
 var saveCurrentStep = function (data) {
-  if (currentViewIndex < exportContent.length) exportContent[i] = {}
+  if (currentViewIndex < exportContent.length) exportContent[currentViewIndex] = { frameUrl, data }
   else {
     exportContent.push({ frameUrl, data })
     currentViewIndex++

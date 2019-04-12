@@ -5,7 +5,7 @@ let clientInfo = { //视口信息
     r: document.documentElement.clientWidth
 };
 let domList = [];
-let domAddressList = []
+let domAddressList = [];
 //初始化
 function init() {
     domList = [];
@@ -17,16 +17,18 @@ function showByCfg(option) {
     init()
     //生成选中区域遮罩层
     //生成扩展区域
-    console.log('start show')
-    window.onload = function () {
-        console.log('222222')
-        for (let i = 0; i < option.data.length; i++) {
-            let { dom, cfg } = option.data[i]
-            let domInfo = getDomByAddress(dom)
-            setSelectedElement(domInfo)
-            changeMargin(domInfo, cfg)
-        }
+    
+    // window.onload = function () {
+    console.log('222222');
+
+    for (let i = 0; i < option.data.length; i++) {
+        let { dom, cfg } = option.data[i]
+        let domInfo = getDomByAddress(dom)
+        setSelectedElement(domInfo)
+        changeMargin(document.getElementById('signmask_'+i), cfg)
     }
+
+    // }
 }
 /**
  * 获取元素在Dom树中的位置
