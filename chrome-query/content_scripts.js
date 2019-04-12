@@ -5,7 +5,6 @@ let clientInfo = { //视口信息
     r: document.documentElement.clientWidth
 };
 let domList = [];
-let selectedAreaInfo = [];
 let domAddressList = []
 /**
  * 获取元素在Dom树中的位置
@@ -67,6 +66,19 @@ function changeMargin(el, option) {
     el.appendChild(left);
     el.appendChild(right);
     el.appendChild(bottom);
+};
+//移除当前选区
+function removeCurrentArea(el){
+    let index = +el.getAttribute('id').split('_')[1];
+    domList[index] = null;
+    document.body.removeChild(el);
+}
+//删除遮罩
+function deleteMask(){
+    let mask = document.getElementsByClassName('mask');
+    Array.prototype.slice.apply(mask).forEach(item => {
+        document.body.removeChild(item);
+    })
 }
 //根据在domList中的下标获取边距信息
 function getMarginInfoByDomListIndex(index) {
@@ -117,24 +129,25 @@ function createMask() {
     console.log('遮罩')
     let beCut2 = new Area(clientInfo);
     let seizeAreaArr = [];
+    let selectedAreaInfo = [];
     console.log('dom节点', domList);
     for (let i = 0; i < domList.length; i++) {
-        let item = domList[i]
-        let marginInfo = getMarginInfoByDomListIndex(i)
-        // domList.forEach(item => {
-        selectedAreaInfo.push({
-            u: offsetDis(item).top - marginInfo.top,
-            d: offsetDis(item).top + item.offsetHeight + marginInfo.bottom,
-            l: offsetDis(item).left - marginInfo.left,
-            r: offsetDis(item).left + item.offsetWidth + marginInfo.right,
-            radius: {
-                'topLeft': getElementCss(item, 'border-top-left-radius'),
-                'topRight': getElementCss(item, 'border-top-right-radius'),
-                'bottomRight': getElementCss(item, 'border-bottom-right-radius'),
-                'bottomLeft': getElementCss(item, 'border-bottom-left-radius'),
-            }
-        });
-        // });
+        if(domList[i] !== null){
+            let item = domList[i];
+            let marginInfo = getMarginInfoByDomListIndex(i)
+            selectedAreaInfo.push({
+                u: offsetDis(item).top - marginInfo.top,
+                d: offsetDis(item).top + item.offsetHeight + marginInfo.bottom,
+                l: offsetDis(item).left - marginInfo.left,
+                r: offsetDis(item).left + item.offsetWidth + marginInfo.right,
+                radius: {
+                    'topLeft': getElementCss(item, 'border-top-left-radius'),
+                    'topRight': getElementCss(item, 'border-top-right-radius'),
+                    'bottomRight': getElementCss(item, 'border-bottom-right-radius'),
+                    'bottomLeft': getElementCss(item, 'border-bottom-left-radius'),
+                }
+            });
+        }
     }
     console.log('位置信息', selectedAreaInfo);
 

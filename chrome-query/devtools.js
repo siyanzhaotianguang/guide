@@ -52,4 +52,15 @@ var changeValue = function (valueObj) {
     })
 }
 
+var removeArea = function(){
+  chrome.devtools.inspectedWindow.eval("removeCurrentArea($0)",
+    { useContentScriptContext: true, frameURL: frameUrl}, (data, err) => {
+    })
+}
+
+var deleteMask = function(){
+  chrome.devtools.inspectedWindow.eval("deleteMask()",
+    { useContentScriptContext: true, frameURL: frameUrl}, (data, err) => {
+    })
+}
 // update()

@@ -64,7 +64,16 @@ window.onload = function () {
         let currentValue = getOption();
         changeValue(currentValue);
     })
-
+    //移除当前选区
+    let removeBtn = document.getElementById('removeBtn');
+    removeBtn.addEventListener('click', function(){
+        removeArea();
+    })
+    //删除遮罩
+    let deleteBtn = document.getElementById('deleteMaskBut');
+    deleteBtn.addEventListener('click', function(){
+        deleteMask();
+    })
 }
 
 function downloadFile(fileName, content) { //创建文件内容
