@@ -1,0 +1,171 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+}
+
+#graphContainer {
+    overflow: hidden;
+    width: calc(100% - 150px);
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 150px;
+}
+
+p {
+    margin-bottom: 15px;
+}
+
+.container {
+    position: relative;
+    width: calc(100% - 300px);
+    min-height: 100%;
+    background: #ccc;
+    box-shadow: 0 0 10px #444;
+    margin: 30px auto;
+}
+
+nav ul {
+    background: #fcc;
+    padding: 10px;
+}
+
+nav ul li {
+    display: inline-block;
+    border-right: 1px solid #ccc;
+    padding: 0 54px;
+    font-weight: bold;
+}
+
+nav ul li:last-child {
+    border-right: none;
+}
+
+.leftside {
+    float: left;
+    width: 80px;
+    margin: 15px 0;
+    padding: 20px;
+    background: #cfc;
+}
+
+.leftside ul {
+    list-style: none;
+}
+
+.leftside ul li {
+    margin: 0 0 15px;
+}
+
+.content {
+    float: left;
+    width: calc(100% - 150px);
+    margin: 15px 0 0 15px;
+    background: #ccf;
+    text-align: justify;
+}
+
+/* 样式库 */
+#toolbar {
+    /* width: 150px; */
+    height: 100%;
+    border-right: 1px #333 solid;
+}
+
+#toolbar h4 {
+    margin-top: 20px;
+}
+
+#toolbar ul {
+    margin-left: 30px;
+}
+
+#toolbar li {
+    cursor: pointer;
+}
+
+#toolbar li:hover {
+    color: #0074cf;
+
+}
+
+/* 页面管理 */
+.button-large {
+   display: flex;
+   justify-content: center;
+}
+
+.button-large button {
+    margin: 5px;
+    width: 140px;
+    height: 25px;
+    background: #0086ff;
+    border-radius: 8px;
+    color: #fff;
+}
+
+.pageManage {
+    display: flex;
+    justify-content: space-around;
+}
+
+#pageName {
+    width: 80px;
+    height: 20px;
+    /* border-radius: 4px; */
+    margin: auto;
+}
+
+.pageManage button {
+    width: 50px;
+    height: 25px;
+    background: #00ae7c;
+    border-radius: 8px;
+    color: #fff;
+    margin-right: 5px;
+}
+
+/* 页面列表 */
+#pageList {
+    width: 80px;
+    height: 20px;
+    margin: auto;
+}
+
+/* 事件绑定 */
+#eventList {
+    width: 60px;
+    margin: 5px;
+}
+
+select option:first-child {
+    display: none;
+}
+
+
+#eventBind button {
+    width: 32px;
+}
+
+#eventCancel {
+    color: red;
+}
+
+/* 文件操作 */
+#buttonGroup {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+#buttonGroup button {
+    width: 50px;
+    height: 25px;
+    background: #0086ff;
+    border-radius: 8px;
+    color: #fff;
+}

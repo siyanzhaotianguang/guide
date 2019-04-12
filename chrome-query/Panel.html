@@ -6,6 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+
+    <link rel="stylesheet" href="./index.css">
+    
+    <!-- mxGraph basePath -->
+    <script type="text/javascript">
+     mxBasePath = './node_modules/mxgraph/javascript/src';
+    </script>
+
+     <!-- 外部依赖库 -->
+     <script type="text/javascript" src="./node_modules/mxgraph/javascript/mxClient.js"></script>
+     <script type="text/javascript" src="./node_modules/file-saver/dist/FileSaver.js"></script>
+     <script type="text/javascript" src="./node_modules/jquery/dist/jquery.js"></script>
+
+
+     <!-- 样式库与元素操作库 -->
+    <!-- <script type="text/javascript" src="bStyle.js"></script>
+    <script type="text/javascript" src="bGraph.js"></script> -->
+
     <style>
         input {
             padding: 5px 15px 5px 5px;
@@ -87,6 +105,63 @@
         <div class="input-item">
             <button id="removeBtn">移除当前选区</button>
         </div>
+
+
+
+
+        <br>
+        <br>
+        <br>
+        <div id="toolbar">
+         <h4>样式库：</h4>
+         <ul>
+             <li onclick="addCells('INSTRUCTION')">引导说明</li>
+             <li onclick="addCells('LAYOUT')">退出引导</li>
+             <li onclick="addCells('HANDLEFT')">左手势</li>
+             <li onclick="addCells('HAND')">右手势</li>
+             <li onclick="addCells('LABEL')">文本</li>
+             <li onclick="addCells('SKIP')">跳过</li>
+             <li onclick="addCells('FIRSTPAGE')">首页面</li>
+             <li onclick="addCells('ACCOMPLISHED')">结束页面</li>
+         </ul>
+         <h4>新增页面：</h4>
+         <div class="button-large">
+             <button onclick="newPage()">+ 新增页面</button>
+         </div>
+ 
+         <div class="pageManage">
+             <input type="text" id="pageName" placeholder="输入页面名.."> <button onclick="pageSave()">保存</button>
+         </div>
+ 
+         <h4>页面列表：</h4>
+         <div class="pageManage">
+             <select id="pageList">
+                 <option></option>
+             </select>
+             <button onclick="pageLoading()">加载</button>
+         </div>
+         <div class="button-large">
+                 <button onclick="editSave()">修改保存</button>
+             </div>
+         <h4>事件绑定：</h4>
+         <div id="eventBind">
+             <select id="eventList">
+                 <option></option>
+                 <option value="layout">退出</option>
+             </select>
+             <button id="eventOK" onclick="eventOK()">绑定</button>
+             <button id="eventCancel" onclick="eventCancel()">解绑</button>
+         </div>
+ 
+         <h4>文件操作：</h4>
+         <div id="buttonGroup">
+             <button onclick="exportXML()">导出</button>
+             <button onclick="importXML()">导入</button>
+         </div>
+     </div>
+
+     <!-- Creates a container for the graph with a grid wallpaper -->
+     <div id="graphContainer" style="pointer-events: none"></div> <!-- pointer-events: none -->
 </body>
 <script src="devtools.js"></script>
 <script src="Panel.js"></script>
