@@ -15,34 +15,33 @@ window.onload = function () {
         setUrl(url)
     })
     //按钮点击事件
+    //选中元素
     let selBut = document.getElementById('selectDomBut')
     selBut.addEventListener('click', function () {
         let marginConfig = getOption();
         update(marginConfig)
     }, false);
+    //预览遮罩
     let creBut = document.getElementById('createMaskBut')
     creBut.addEventListener('click', function () {
         mask();
     }, false);
-    let backBut = document.getElementById('backBut')
-    backBut.addEventListener('click', function () {
-        if (currentViewIndex <= 0) return
-        let nowIndex = --currentViewIndex
-        // let cfg = exportContent[nowIndex]
-        showByViewIndex(nowIndex)
-    }, false);
-    // let setBut = document.getElementById('setIframeUrlBut')
-    // setBut.addEventListener('click', function () {
-    //     let url = document.getElementById('iframeUrl').value
-    //     setUrl(url)
-    // }, false);
+    //更改步骤
+    let selectStepBut = document.getElementById('selectStep')
+    selectStepBut.addEventListener('change', function () {
+        currentViewIndex = this.value
+        showByViewIndex(currentViewIndex)
+    })
+    //下载配置
     let downBut = document.getElementById('downloadCfg')
     downBut.addEventListener('click', function () {
         downloadFile('cfg.json', JSON.stringify(exportContent))
     }, false);
+    //保存步骤
     let saveBut = document.getElementById('saveCurrentStep')
     saveBut.addEventListener('click', function () {
         getCfgAndDomList(function (err, data) {
+            addOption()
             saveCurrentStep(data)
             setUrl(frameUrl)
         })
@@ -73,14 +72,25 @@ window.onload = function () {
     })
     //移除当前选区
     let removeBtn = document.getElementById('removeBtn');
-    removeBtn.addEventListener('click', function(){
+    removeBtn.addEventListener('click', function () {
         removeArea();
     })
     //删除遮罩
     let deleteBtn = document.getElementById('deleteMaskBut');
-    deleteBtn.addEventListener('click', function(){
+    deleteBtn.addEventListener('click', function () {
         deleteMask();
     })
+}
+function addOption() {
+    let selectStepBut = document.getElementById('selectStep')
+    let index = exportContent.length
+    selectStepBut.options.add(new Option(`第${index + 1}步`, index))
+    for (var i = 0; i < selectStepBut.options.length; i++) {
+        if (selectStepBut.options[i].text === '新步骤') {
+            selectStepBut.options[i].value = index + 1;
+            break;
+        }
+    }
 }
 
 function downloadFile(fileName, content) { //创建文件内容

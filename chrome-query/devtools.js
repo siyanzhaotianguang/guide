@@ -20,7 +20,6 @@ var mask = function () {
 }
 
 var update = function (marginConfig) {
-  console.log('frameUrl', frameUrl)
   chrome.devtools.inspectedWindow.eval(`setSelectedElement($0, ${JSON.stringify(marginConfig)})`,
     { useContentScriptContext: true, frameURL: frameUrl }, (data, err) => {
       chrome.devtools.inspectedWindow.eval(`log(${JSON.stringify(data)})`,
@@ -34,8 +33,7 @@ var setUrl = function (url, cb) {
   chrome.devtools.inspectedWindow.eval(`setUrl(${JSON.stringify(url)})`,
     { useContentScriptContext: true }, (data, err) => {
       frameUrl = data;
-      if(cb) cb();
-      console.log('setUrl ', frameUrl)
+      if (cb) cb();
     })
 }
 
@@ -48,13 +46,16 @@ var getCfgAndDomList = function (cb) {
 
 var showByViewIndex = function (index) {
   let cfg = exportContent[index]
-  console.log('bbbb', cfg, frameUrl)
+  if (!cfg) {
+    currentViewIndex = exportContent.length
+    setUrl(frameUrl)
+    return
+  }
   setUrl(cfg.frameUrl, function (err, data) {
-    setTimeout(function(){
+    setTimeout(function () {
       chrome.devtools.inspectedWindow.eval(`showByCfg(${JSON.stringify(cfg)})`,
-      { useContentScriptContext: true, frameURL: frameUrl }, (data, err) => {
-        console.log('show end')
-      })
+        { useContentScriptContext: true, frameURL: frameUrl }, (data, err) => {
+        })
     }, 3000);
   })
 }
