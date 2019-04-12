@@ -6,6 +6,7 @@
 // The function below is executed in the context of the inspected page.
 let frameUrl = ''
 let exportContent = []
+let currentViewIndex = 0
 
 chrome.devtools.panels.create("new panels",
   "Panel.png",
@@ -20,6 +21,7 @@ var mask = function () {
 }
 
 var update = function (marginConfig) {
+  console.log('frameUrl', frameUrl)
   chrome.devtools.inspectedWindow.eval(`setSelectedElement($0, ${JSON.stringify(marginConfig)})`,
     { useContentScriptContext: true, frameURL: frameUrl }, (data, err) => {
       chrome.devtools.inspectedWindow.eval(`log(${JSON.stringify(data)})`,
@@ -28,8 +30,12 @@ var update = function (marginConfig) {
     })
 }
 
-var setUrl = function (url) {
-  chrome.devtools.inspectedWindow.eval(`setUrl(${JSON.stringify(url)})`,
+
+var setUrl = function (url, cb1) {
+  chrome.devtools.inspectedWindow.eval(`setUrl(${JSON.stringify(url)},function (err, data) {
+    if (${cb1}) ${cb1}(err, data)
+    console.log('url', data,frameUrl)
+  })`,
     { useContentScriptContext: true }, (data, err) => {
       frameUrl = data
     })
@@ -42,8 +48,22 @@ var getCfgAndDomList = function (cb) {
     })
 }
 
+var showByViewIndex = function (index) {
+  let cfg = exportContent[index]
+  setUrl(cfg.frameUrl, function (err, data) {
+    chrome.devtools.inspectedWindow.eval(`showByCfg(${JSON.stringify(cfg)})`,
+      { useContentScriptContext: true, frameURL: frameUrl }, (data, err) => {
+        console.log('show end')
+      })
+  })
+}
+
 var saveCurrentStep = function (data) {
-  exportContent.push({ frameUrl, data })
+  if (currentViewIndex < exportContent.length) exportContent[i] = {}
+  else {
+    exportContent.push({ frameUrl, data })
+    currentViewIndex++
+  }
 }
 
 var changeValue = function (valueObj) {

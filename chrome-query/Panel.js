@@ -24,6 +24,13 @@ window.onload = function () {
     creBut.addEventListener('click', function () {
         mask();
     }, false);
+    let backBut = document.getElementById('backBut')
+    backBut.addEventListener('click', function () {
+        if (currentViewIndex <= 0) return
+        let nowIndex = --currentViewIndex
+        // let cfg = exportContent[nowIndex]
+        showByViewIndex(nowIndex)
+    }, false);
     // let setBut = document.getElementById('setIframeUrlBut')
     // setBut.addEventListener('click', function () {
     //     let url = document.getElementById('iframeUrl').value

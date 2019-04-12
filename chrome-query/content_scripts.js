@@ -6,6 +6,28 @@ let clientInfo = { //视口信息
 };
 let domList = [];
 let domAddressList = []
+//初始化
+function init() {
+    domList = [];
+    selectedAreaInfo = [];
+    domAddressList = []
+}
+//根据配置渲染页面
+function showByCfg(option) {
+    init()
+    //生成选中区域遮罩层
+    //生成扩展区域
+    console.log('start show')
+    window.onload = function () {
+        console.log('222222')
+        for (let i = 0; i < option.data.length; i++) {
+            let { dom, cfg } = option.data[i]
+            let domInfo = getDomByAddress(dom)
+            setSelectedElement(domInfo)
+            changeMargin(domInfo, cfg)
+        }
+    }
+}
 /**
  * 获取元素在Dom树中的位置
  * @param {*} ele 
@@ -33,7 +55,7 @@ function getCfgAndDomList() {
     return result
 }
 //选择元素
-function setSelectedElement(el, cfg) {
+function setSelectedElement(el) {
     let result = [];
     getIndex(el, result);
 
