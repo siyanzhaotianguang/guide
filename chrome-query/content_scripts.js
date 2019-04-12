@@ -90,13 +90,13 @@ function changeMargin(el, option) {
     el.appendChild(bottom);
 };
 //移除当前选区
-function removeCurrentArea(el){
+function removeCurrentArea(el) {
     let index = +el.getAttribute('id').split('_')[1];
     domList[index] = null;
     document.body.removeChild(el);
 }
 //删除遮罩
-function deleteMask(){
+function deleteMask() {
     let mask = document.getElementsByClassName('mask');
     Array.prototype.slice.apply(mask).forEach(item => {
         document.body.removeChild(item);
@@ -154,7 +154,7 @@ function createMask() {
     let selectedAreaInfo = [];
     console.log('dom节点', domList);
     for (let i = 0; i < domList.length; i++) {
-        if(domList[i] !== null){
+        if (domList[i] !== null) {
             let item = domList[i];
             let marginInfo = getMarginInfoByDomListIndex(i)
             selectedAreaInfo.push({

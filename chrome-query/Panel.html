@@ -1,85 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-        input{
+        input {
             padding: 5px 15px 5px 5px;
         }
-        .input-item{
+
+        .input-item {
             margin-bottom: 10px;
         }
-        .item-tips{
+
+        .item-tips {
             font-size: 16px;
             margin-bottom: 10px;
             color: red;
         }
-        label{
+
+        label {
             font-size: 14px;
         }
-        button{
-            padding:5px;
+
+        button {
+            padding: 5px;
         }
-        .btn-wrap{
+
+        .btn-wrap {
             margin-bottom: 10px;
         }
-        .btn-wrap button{
+
+        .btn-wrap button {
             margin-right: 15px;
         }
     </style>
 </head>
+
 <body>
-<<<<<<< HEAD
-    <script src="jquery-3.3.1.min.js"></script>
+    <!-- <script src="jquery-3.3.1.min.js"></script>
     <script src="devtools.js"></script>
-    <script src="Panel.js"></script>
+    <script src="Panel.js"></script> -->
     <div>
         <input type="button" value="上一步" id='backBut' />
     </div>
     <div>
-        设置iframeUrl:
-        <input type="text" id='iframeUrl' />
-=======
-    <div class="item-tips">
-        全局操作：
->>>>>>> 62384fa581362975ee6236c640b55ce42a9b747c
-    </div>
-    <div class="input-item">
-        <label>设置iframeUrl：</label><input type="text" id='iframeUrl' />
-    </div>
-    <div class="input-item">
-        <div class="btn-wrap">
-            <button id="selectDomBut">选择元素</button>
-            <button id="createMaskBut">预览遮罩</button>
-            <button id="deleteMaskBut">删除遮罩</button>
+        <div class="item-tips">
+            全局操作：
         </div>
-        <div class="btn-wrap">
-            <button id="saveCurrentStep">保存步骤</button>
-            <button id="downloadCfg">下载配置</button>
+        <div class="input-item">
+            <label>设置iframeUrl：</label>
+            <input type="text" id='iframeUrl' />
         </div>
-    </div>
-    <div class="item-tips">
-        当前选区操作：
-    </div>
-    <div class="input-item">
-        <label>上边距：</label><input type="text" id='upMargin' value="0" />
-    </div>
-    <div class="input-item">
-        <label>右边距：</label><input type="text" id='rightMargin' value="0" />
-    </div>
-    <div class="input-item">
-        <label>下边距：</label><input type="text" id='downMargin' value="0" />
-    </div>
-    <div class="input-item">
-        <label>左边距：</label><input type="text" id='leftMargin' value="0" />
-    </div>
-    <div class="input-item">
-        <button id="removeBtn">移除当前选区</button>
-    </div>
+        <div class="input-item">
+            <div class="btn-wrap">
+                <button id="selectDomBut">选择元素</button>
+                <button id="createMaskBut">预览遮罩</button>
+                <button id="deleteMaskBut">删除遮罩</button>
+            </div>
+            <div class="btn-wrap">
+                <button id="saveCurrentStep">保存步骤</button>
+                <button id="downloadCfg">下载配置</button>
+            </div>
+        </div>
+        <div class="item-tips">
+            当前选区操作：
+        </div>
+        <div class="input-item">
+            <label>上边距：</label>
+            <input type="text" id='upMargin' value="0" />
+        </div>
+        <div class="input-item">
+            <label>右边距：</label>
+            <input type="text" id='rightMargin' value="0" />
+        </div>
+        <div class="input-item">
+            <label>下边距：</label>
+            <input type="text" id='downMargin' value="0" />
+        </div>
+        <div class="input-item">
+            <label>左边距：</label>
+            <input type="text" id='leftMargin' value="0" />
+        </div>
+        <div class="input-item">
+            <button id="removeBtn">移除当前选区</button>
+        </div>
 </body>
 <script src="devtools.js"></script>
 <script src="Panel.js"></script>
+
 </html>

@@ -1,4 +1,3 @@
-
 // Copyright (c) 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -31,13 +30,11 @@ var update = function (marginConfig) {
 }
 
 
-var setUrl = function (url, cb1) {
-  chrome.devtools.inspectedWindow.eval(`setUrl(${JSON.stringify(url)},function (err, data) {
-    if (${cb1}) ${cb1}(err, data)
-    console.log('url', data,frameUrl)
-  })`,
+var setUrl = function (url) {
+  chrome.devtools.inspectedWindow.eval(`setUrl(${JSON.stringify(url)})`,
     { useContentScriptContext: true }, (data, err) => {
       frameUrl = data
+      console.log('setUrl ', frameUrl)
     })
 }
 
@@ -50,6 +47,7 @@ var getCfgAndDomList = function (cb) {
 
 var showByViewIndex = function (index) {
   let cfg = exportContent[index]
+  console.log('bbbb', cfg, frameUrl)
   setUrl(cfg.frameUrl, function (err, data) {
     chrome.devtools.inspectedWindow.eval(`showByCfg(${JSON.stringify(cfg)})`,
       { useContentScriptContext: true, frameURL: frameUrl }, (data, err) => {
@@ -72,15 +70,15 @@ var changeValue = function (valueObj) {
     })
 }
 
-var removeArea = function(){
+var removeArea = function () {
   chrome.devtools.inspectedWindow.eval("removeCurrentArea($0)",
-    { useContentScriptContext: true, frameURL: frameUrl}, (data, err) => {
+    { useContentScriptContext: true, frameURL: frameUrl }, (data, err) => {
     })
 }
 
-var deleteMask = function(){
+var deleteMask = function () {
   chrome.devtools.inspectedWindow.eval("deleteMask()",
-    { useContentScriptContext: true, frameURL: frameUrl}, (data, err) => {
+    { useContentScriptContext: true, frameURL: frameUrl }, (data, err) => {
     })
 }
 // update()
